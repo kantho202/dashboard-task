@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router/dom";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import DashboardLayout from "../layout/DashboardLayout";
 import Products from "../components/Products/Products";
+import Users from "../components/Users/User";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path:'/products',
         element:<Products></Products>
+      },
+      {
+        path:'/users',
+        element:<Users></Users>
       }
     ]
   },

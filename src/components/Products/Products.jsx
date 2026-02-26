@@ -1,67 +1,91 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://task-api-eight-flax.vercel.app/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
     return (
-        <div>
-            fdgdfg
-        </div>
-         // <div className='p-5'>
-    //      <div className='grid grid-cols-12 gap-5 w-full '>
-    //         <div className='col-span-2 border-2 border-red-500'>
-    //             <h1 className='font-bold text-2xl p-5'>Donezo</h1>
-    //             <div>
-    //                 <h1 className='font-semibold py-3'>Menu</h1>
-    //                 <Link to='/' className='flex items-center gap-2 font-semibold'> <MdDashboard /> Dashboard</Link>
-    //                 <Link to='/products' className='flex items-center gap-2 font-semibold'> <MdDashboard /> Products</Link>
-    //             </div>
-
-    //         </div>
-    //         <div className='col-span-10 border-2 border-amber-500'>
-    //             {/* searchbox */}
-    //             <div className='flex gap-4 items-center justify-between'>
-    //                 <div>
-    //                     <label className="input outline-0 ">
-    //                         <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    //                             <g
-    //                                 strokeLinejoin="round"
-    //                                 strokeLinecap="round"
-    //                                 strokeWidth="2.5"
-    //                                 fill="none"
-    //                                 stroke="currentColor"
-    //                             >
-    //                                 <circle cx="11" cy="11" r="8"></circle>
-    //                                 <path d="m21 21-4.3-4.3"></path>
-    //                             </g>
-    //                         </svg>
-    //                         <input type="search" required placeholder="Search" />
-    //                     </label>
-    //                 </div>
-    //                 <div className='flex gap-5'>
-    //                     <div className='flex gap-4 items-center'>
-    //                         <MdOutlineEmail size={23} />
-    //                         <MdNotificationsNone size={23} />
-    //                     </div>
-    //                     <div className='flex gap-2.5'>
-    //                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-    //                             <div className="w-10 rounded-full">
-    //                                 <img
-    //                                     alt="Tailwind CSS Navbar component"
-    //                                     src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-    //                             </div>
-    //                         </div>
-    //                         <div>
-    //                             <h1 className='font-bold'>Hanney Shing</h1>
-    //                             <p className='font-medium text-gray-500 text-[13px]'>hanneyshing@gmail.com</p>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //             <div className="p-4"><Outlet></Outlet> </div>
-    //         </div>
-
-    //     </div>
-    // </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500 text-lg">Loading products...</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">
+            Product Dashboard
+          </h1>
+          <p className="text-gray-500">
+            Manage and explore your products easily.
+          </p>
+        </div>
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <div
+              key={product._id}
+              className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden"
+            >
+              {/* Image */}
+              <div className="h-48 bg-gray-200 overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {product.name}
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                  {product.description}
+                </p>
+
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-green-600 font-bold text-lg">
+                    ${product.price}
+                  </span>
+
+                  <span className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-600">
+                    {product.category}
+                  </span>
+                </div>
+
+                <button className="w-full mt-4 bg-green-700 text-white py-2 rounded-lg hover:bg-green-800 transition">
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
 };
 
 export default Products;
