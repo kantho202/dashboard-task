@@ -40,12 +40,12 @@ const Products = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
               key={product._id}
               className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden"
-            >
+             >
               {/* Image */}
               <div className="h-48 bg-gray-200 overflow-hidden">
                 <img
