@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { GoArrowUpRight } from 'react-icons/go';
 import { MdDashboard, MdNotificationsNone, MdOutlineEmail } from 'react-icons/md';
+import { data } from 'react-router';
 
 
 const Dashboard = () => {
@@ -32,6 +33,17 @@ const Dashboard = () => {
             color: "bg-purple-100 text-purple-600",
         },
     ];
+    const[overview,setOverview]=useState([]);
+    const [loading,setLoading]=useState(false)
+    useEffect(()=>{
+        fetch("https://task-api-eight-flax.vercel.app/api/overview")
+        .then(res=>res.json())
+        .then(data=>{
+            setOverview(data)
+            console.log(data)
+            setLoading(false)
+        })
+    },[])
     return (
         <div className=' p-5 bg-[#f7f7f7]'>
             <div className="max-w-7xl mx-auto pb-5">
@@ -64,12 +76,12 @@ const Dashboard = () => {
                     {/* Total Projects */}
                     <div className="bg-green-700 text-white rounded-2xl p-6">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm font-semibold">Total Projects</h3>
+                            <h3 className="text-sm font-semibold">Total Users</h3>
                             <div className="bg-white text-green-700 w-7 h-7 flex items-center justify-center rounded-full text-sm">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4">24</h2>
+                        <h2 className="text-4xl font-bold mt-4">{overview.totalUsers}</h2>
                         <p className="text-xs mt-3 opacity-90">
                             Increased from last month
                         </p>
@@ -78,12 +90,12 @@ const Dashboard = () => {
                     {/* Ended Projects */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm text-gray-600 font-semibold">Ended Projects</h3>
+                            <h3 className="text-sm text-gray-600 font-semibold">Active Users</h3>
                             <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">10</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.activeUsers}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
@@ -92,12 +104,12 @@ const Dashboard = () => {
                     {/* Running Projects */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm text-gray-600 font-semibold">Running Projects</h3>
+                            <h3 className="text-sm text-gray-600 font-semibold">Revenue</h3>
                             <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">12</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.revenue}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
@@ -106,13 +118,13 @@ const Dashboard = () => {
                     {/* Pending Project */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm text-gray-600 font-semibold">Pending Project</h3>
+                            <h3 className="text-sm text-gray-600 font-semibold">Growth</h3>
                             <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
                                 <GoArrowUpRight size={20} />
 
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">2</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.growth}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             On Discuss
                         </p>
