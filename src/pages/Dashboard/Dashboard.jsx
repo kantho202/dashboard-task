@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { GoArrowUpRight } from 'react-icons/go';
 import { MdDashboard, MdNotificationsNone, MdOutlineEmail } from 'react-icons/md';
-import { data } from 'react-router';
+// import { data } from 'react-router';
 
 
 const Dashboard = () => {
@@ -33,17 +33,24 @@ const Dashboard = () => {
             color: "bg-purple-100 text-purple-600",
         },
     ];
-    const[overview,setOverview]=useState([]);
-    const [loading,setLoading]=useState(false)
-    useEffect(()=>{
+    const [overview, setOverview] = useState([]);
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
         fetch("https://task-api-eight-flax.vercel.app/api/overview")
-        .then(res=>res.json())
-        .then(data=>{
-            setOverview(data)
-            console.log(data)
-            setLoading(false)
-        })
-    },[])
+            .then(res => res.json())
+            .then(data => {
+                setOverview(data)
+                console.log(data)
+                setLoading(false)
+            })
+    }, [])
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-gray-500 text-lg">Loading dashboard...</p>
+            </div>
+        );
+    }
     return (
         <div className=' p-5 bg-[#f7f7f7]'>
             <div className="max-w-7xl mx-auto pb-5">
@@ -140,123 +147,123 @@ const Dashboard = () => {
 
                     <div className='flex gap-6'>
                         {/* Project Analytics */}
-                    <div className="bg-white rounded-2xl p-6">
-                        <h2 className="font-semibold text-gray-700 mb-4">
-                            Project Analytics
-                        </h2>
+                        <div className="bg-white rounded-2xl p-6">
+                            <h2 className="font-semibold text-gray-700 mb-4">
+                                Project Analytics
+                            </h2>
 
-                        <div className="flex items-end gap-4 h-40">
-                            {[40, 80, 60, 90, 50, 70, 65].map((h, i) => (
-                                <div
-                                    key={i}
-                                    className={`w-10 rounded-full ${i === 3
-                                        ? "bg-green-700"
-                                        : i === 1
-                                            ? "bg-green-400"
-                                            : "bg-gray-200"
-                                        }`}
-                                    style={{ height: `${h}%` }}
-                                />
-                            ))}
+                            <div className="flex items-end gap-4 h-40">
+                                {[40, 80, 60, 90, 50, 70, 65].map((h, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-10 rounded-full ${i === 3
+                                            ? "bg-green-700"
+                                            : i === 1
+                                                ? "bg-green-400"
+                                                : "bg-gray-200"
+                                            }`}
+                                        style={{ height: `${h}%` }}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                    </div>
- {/* Reminders */}
-                    <div className="bg-white rounded-2xl p-6">
-                        <h2 className="font-semibold text-gray-700 mb-4">
-                            Reminders
-                        </h2>
+                        {/* Reminders */}
+                        <div className="bg-white rounded-2xl p-6">
+                            <h2 className="font-semibold text-gray-700 mb-4">
+                                Reminders
+                            </h2>
 
-                        <p className="font-medium">
-                            Meeting with Arc Company
-                        </p>
-                        <p className="text-sm text-gray-500 mb-4">
-                            02:00 pm - 04:00 pm
-                        </p>
+                            <p className="font-medium">
+                                Meeting with Arc Company
+                            </p>
+                            <p className="text-sm text-gray-500 mb-4">
+                                02:00 pm - 04:00 pm
+                            </p>
 
-                        <button className="bg-green-700 text-white px-4 py-2 rounded-full text-sm">
-                            + Start Meeting
-                        </button>
-                    </div>
+                            <button className="bg-green-700 text-white px-4 py-2 rounded-full text-sm">
+                                + Start Meeting
+                            </button>
+                        </div>
                     </div>
                     <div className='flex gap-6 '>
                         {/* Team Collaboration */}
-                    <div className="bg-white rounded-2xl p-6 flex-1">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="font-semibold text-gray-700">
-                                Team Collaboration
-                            </h2>
-                            <button className="border px-4 py-1 rounded-full text-sm">
-                                + Add Member
-                            </button>
-                        </div>
+                        <div className="bg-white rounded-2xl p-6 flex-1">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="font-semibold text-gray-700">
+                                    Team Collaboration
+                                </h2>
+                                <button className="border px-4 py-1 rounded-full text-sm">
+                                    + Add Member
+                                </button>
+                            </div>
 
-                        <div className="space-y-4">
-                            {[
-                                {
-                                    name: "Alexandra Dell",
-                                    task: "Working on GitHub Project Repository",
-                                    status: "Completed",
-                                    color: "bg-green-100 text-green-600",
-                                },
-                                {
-                                    name: "Edwin Adenike",
-                                    task: "Authentication System",
-                                    status: "In Progress",
-                                    color: "bg-yellow-100 text-yellow-600",
-                                },
-                                {
-                                    name: "Isaac Okafor",
-                                    task: "Search & Filter Functionality",
-                                    status: "Pending",
-                                    color: "bg-red-100 text-red-600",
-                                },
-                                {
-                                    name: "David Ossoli",
-                                    task: "Homepage Layout",
-                                    status: "In Progress",
-                                    color: "bg-yellow-100 text-yellow-600",
-                                },
-                            ].map((member, i) => (
-                                <div
-                                    key={i}
-                                    className="flex justify-between items-center"
-                                >
-                                    <div>
-                                        <p className="font-medium text-sm">
-                                            {member.name}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            {member.task}
-                                        </p>
-                                    </div>
-
-                                    <span
-                                        className={`text-xs px-3 py-1 rounded-full ${member.color}`}
+                            <div className="space-y-4">
+                                {[
+                                    {
+                                        name: "Alexandra Dell",
+                                        task: "Working on GitHub Project Repository",
+                                        status: "Completed",
+                                        color: "bg-green-100 text-green-600",
+                                    },
+                                    {
+                                        name: "Edwin Adenike",
+                                        task: "Authentication System",
+                                        status: "In Progress",
+                                        color: "bg-yellow-100 text-yellow-600",
+                                    },
+                                    {
+                                        name: "Isaac Okafor",
+                                        task: "Search & Filter Functionality",
+                                        status: "Pending",
+                                        color: "bg-red-100 text-red-600",
+                                    },
+                                    {
+                                        name: "David Ossoli",
+                                        task: "Homepage Layout",
+                                        status: "In Progress",
+                                        color: "bg-yellow-100 text-yellow-600",
+                                    },
+                                ].map((member, i) => (
+                                    <div
+                                        key={i}
+                                        className="flex justify-between items-center"
                                     >
-                                        {member.status}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                     {/* Project Progress */}
-                    <div className="bg-white rounded-2xl p-6 text-center">
-                        <h2 className="font-semibold text-gray-700 mb-4">
-                            Project Progress
-                        </h2>
+                                        <div>
+                                            <p className="font-medium text-sm">
+                                                {member.name}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {member.task}
+                                            </p>
+                                        </div>
 
-                        <div className="relative w-40 h-40 mx-auto">
-                            <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
-                            <div className="absolute inset-0 rounded-full border-8 border-green-700 border-t-transparent rotate-45"></div>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-2xl font-bold">41%</span>
+                                        <span
+                                            className={`text-xs px-3 py-1 rounded-full ${member.color}`}
+                                        >
+                                            {member.status}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
+                        {/* Project Progress */}
+                        <div className="bg-white rounded-2xl p-6 text-center">
+                            <h2 className="font-semibold text-gray-700 mb-4">
+                                Project Progress
+                            </h2>
 
-                        <p className="text-sm text-gray-500 mt-3">
-                            Project Execution
-                        </p>
-                    </div>
+                            <div className="relative w-40 h-40 mx-auto">
+                                <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
+                                <div className="absolute inset-0 rounded-full border-8 border-green-700 border-t-transparent rotate-45"></div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <span className="text-2xl font-bold">41%</span>
+                                </div>
+                            </div>
+
+                            <p className="text-sm text-gray-500 mt-3">
+                                Project Execution
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -303,9 +310,9 @@ const Dashboard = () => {
                         </div>
 
                     </div>
-                   
 
-                   
+
+
 
                     {/* Time Tracker */}
                     <div className="bg-green-900 text-white rounded-2xl p-6">

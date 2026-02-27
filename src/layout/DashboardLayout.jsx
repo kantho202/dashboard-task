@@ -3,8 +3,19 @@ import { FaRegCircleUser } from 'react-icons/fa6';
 import { IoAnalyticsSharp } from 'react-icons/io5';
 import { MdDashboard, MdNotificationsNone, MdOutlineEmail, MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { Link, Outlet } from 'react-router';
+import useAuth from '../hooks/useAuth';
 
 const DashboardLayout = () => {
+  const {user,signOutUser}=useAuth()
+  const handleLogOut=()=>{
+    signOutUser()
+    .then(result=>{
+      console.log(result.user)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
   return (
     <div className="drawer lg:drawer-open ">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -41,19 +52,29 @@ const DashboardLayout = () => {
                   <MdOutlineEmail size={23} />
                   <MdNotificationsNone size={23} />
                 </div>
-                <div className='flex gap-2.5'>
-                  <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                    <div className="w-10 rounded-full">
-                      <img
-                        alt="Tailwind CSS Navbar component"
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                    </div>
-                  </div>
+                {
+                  user ? <>
+                  <button onClick={handleLogOut} className='btn font-bold'>LogOut</button>
+                  </> :
                   <div>
-                    <h1 className='font-bold text-[12px] lg:text-base '>Hanney Shing</h1>
-                    <p className='font-medium text-gray-500 text-[10px] lg:text-[13px]'>hanneyshing@gmail.com</p>
+                    <Link to="/login" className='btn font-bold'>Login </Link>
+                  <Link to="/register" className='btn font-bold'>Register </Link>
+                    
                   </div>
-                </div>
+                //   <div className='flex gap-2.5'>
+                //   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                //     <div className="w-10 rounded-full">
+                //       <img
+                //         alt="Tailwind CSS Navbar component"
+                //         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                //     </div>
+                //   </div>
+                //   <div>
+                //     <h1 className='font-bold text-[12px] lg:text-base '>Hanney Shing</h1>
+                //     <p className='font-medium text-gray-500 text-[10px] lg:text-[13px]'>hanneyshing@gmail.com</p>
+                //   </div>
+                // </div>
+                }
               </div>
             </div>
 
@@ -70,7 +91,7 @@ const DashboardLayout = () => {
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
             {/* List item */}
-            <h1 className='font-bold text-2xl p-4'>Donezo</h1>
+            <Link to="/" className='font-bold text-2xl p-4'>Donezo</Link>
             <li>
               <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center" data-tip="Dashboard">
                 {/* Home icon */}
@@ -81,7 +102,7 @@ const DashboardLayout = () => {
 
             {/* List item */}
             <li>
-              <Link to="/analytics" className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center" data-tip="Products">
+              <Link to="/analytics" className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center" data-tip="Analytics">
                 {/* Settings icon */}
                 <IoAnalyticsSharp />
                 <span className="">Analytics</span>

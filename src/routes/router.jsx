@@ -5,8 +5,12 @@ import DashboardLayout from "../layout/DashboardLayout";
 import Products from "../components/Products/Products";
 import Users from "../components/Users/User";
 import Analytics from "../components/Analytics/Analytics";
+import AuthLayout from "../layout/AuthLayout";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
 
 export const router = createBrowserRouter([
+ 
   {
     path: "/",
     element:<DashboardLayout></DashboardLayout>,
@@ -26,6 +30,20 @@ export const router = createBrowserRouter([
       {
         path:'/users',
         element:<Users></Users>
+      }
+    ]
+  },
+   {
+    path:'/',
+    Component:AuthLayout,
+    children:[
+      {
+        path:'/login',
+        element:<Login></Login>
+      },
+      {
+        path:'/register',
+        element:<Register></Register>
       }
     ]
   },
