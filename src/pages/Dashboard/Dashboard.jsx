@@ -1,10 +1,44 @@
 import { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
-import { BsFillRecordCircleFill } from 'react-icons/bs';
-import { FaPlus } from 'react-icons/fa';
+import { BsCameraVideoFill, BsFillRecordCircleFill } from 'react-icons/bs';
+import { FaPauseCircle, FaPlus } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
-import { IoVideocam } from 'react-icons/io5';
+import { HiVideoCamera } from 'react-icons/hi';
 
+// Counter animation hook
+const useCountUp = (end, duration = 2000) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (!end) return;
+        
+        let startTime;
+        let animationFrame;
+
+        const animate = (currentTime) => {
+            if (!startTime) startTime = currentTime;
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            
+            // Easing function for smooth animation
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            setCount(Math.floor(easeOutQuart * end));
+
+            if (progress < 1) {
+                animationFrame = requestAnimationFrame(animate);
+            }
+        };
+
+        animationFrame = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+            }
+        };
+    }, [end, duration]);
+
+    return count;
+};
 
 const Dashboard = () => {
     const projects = [
@@ -34,17 +68,29 @@ const Dashboard = () => {
             color: "bg-purple-100 text-purple-600",
         },
     ];
-    const [overview, setOverview] = useState([]);
-    const [loading, setLoading] = useState(false)
+
+    const [overview, setOverview] = useState({});
+    const [loading, setLoading] = useState(true);
+    
+    // Animated counters
+    const totalUsersCount = useCountUp(overview.totalUsers, 2000);
+    const activeUsersCount = useCountUp(overview.activeUsers, 2000);
+    const revenueCount = useCountUp(overview.revenue || 0, 2000);
+    const growthCount = useCountUp(overview.growth || 0, 2000);
+    
     useEffect(() => {
         fetch("https://task-api-eight-flax.vercel.app/api/overview")
             .then(res => res.json())
             .then(data => {
-                setOverview(data)
-                console.log(data)
-                setLoading(false)
+                setOverview(data);
+                setLoading(false);
             })
-    }, [])
+            .catch(err => {
+                console.error(err);
+                setLoading(false);
+            });
+    }, []);
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
@@ -55,6 +101,7 @@ const Dashboard = () => {
             </div>
         );
     }
+
     return (
         <div className='p-5 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen'>
             <div className="max-w-7xl mx-auto pb-5">
@@ -71,20 +118,20 @@ const Dashboard = () => {
                     </div>
 
                     <div className="flex gap-3 animate-fade-in-delay">
-                        <button className="bg-green-700 flex gap-2 items-center cursor-pointer font-semibold text-white px-5 py-2 rounded-full hover:bg-green-800 hover:scale-105 hover:shadow-lg transition-all duration-300 active:scale-95">
-                            <FaPlus /> Add Project
+                        <button className="bg-green-700 flex gap-2 items-center font-semibold text-white px-5 py-2 rounded-full hover:bg-green-800 hover:scale-105 hover:shadow-lg transition-all duration-300 active:scale-95">
+                            <FaPlus />Add Project
                         </button>
 
-                        <button className="border font-semibold cursor-pointer border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-200 hover:scale-105 hover:shadow-md transition-all duration-300 active:scale-95">
+                        <button className="border font-semibold border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-200 hover:scale-105 hover:shadow-md transition-all duration-300 active:scale-95">
                             Import Data
                         </button>
                     </div>
                 </div>
 
-                {/* Cards */}
+                {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-                    {/* Total Projects */}
+                    {/* Total Users */}
                     <div className="bg-green-700 text-white rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.1s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm font-semibold">Total Users</h3>
@@ -92,13 +139,15 @@ const Dashboard = () => {
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 group-hover:scale-110 transition-transform duration-300">{overview.totalUsers}</h2>
+                        <h2 className="text-4xl font-bold mt-4 group-hover:scale-110 transition-transform duration-300">
+                            {totalUsersCount.toLocaleString()}
+                        </h2>
                         <p className="text-xs mt-3 opacity-90">
                             Increased from last month
                         </p>
                     </div>
 
-                    {/* Ended Projects */}
+                    {/* Active Users */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.2s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Active Users</h3>
@@ -106,13 +155,15 @@ const Dashboard = () => {
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.activeUsers}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">
+                            {activeUsersCount.toLocaleString()}
+                        </h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
                     </div>
 
-                    {/* Running Projects */}
+                    {/* Revenue */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.3s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Revenue</h3>
@@ -120,22 +171,25 @@ const Dashboard = () => {
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.revenue}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">
+                            {revenueCount.toLocaleString()}
+                        </h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
                     </div>
 
-                    {/* Pending Project */}
+                    {/* Growth */}
                     <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.4s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Growth</h3>
                             <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600 group-hover:scale-110 group-hover:rotate-45 group-hover:border-green-600 group-hover:text-green-600 transition-all duration-300">
                                 <GoArrowUpRight size={20} />
-
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.growth}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">
+                            {growthCount.toLocaleString()}
+                        </h2>
                         <p className="text-xs mt-3 text-green-600">
                             On Discuss
                         </p>
@@ -144,14 +198,15 @@ const Dashboard = () => {
                 </div>
 
             </div>
-            <div className="  grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
 
                 {/* LEFT SIDE */}
                 <div className="lg:col-span-2 space-y-6">
 
                     <div className='flex gap-6'>
                         {/* Project Analytics */}
-                        <div className="bg-white rounded-2xl p-6">
+                        <div className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 animate-fade-in-delay flex-1">
                             <h2 className="font-semibold text-gray-700 mb-4">
                                 Project Analytics
                             </h2>
@@ -160,44 +215,48 @@ const Dashboard = () => {
                                 {[40, 80, 60, 90, 50, 70, 65].map((h, i) => (
                                     <div
                                         key={i}
-                                        className={`w-10 rounded-full ${i === 3
-                                            ? "bg-green-700"
-                                            : i === 1
-                                                ? "bg-green-400"
-                                                : "bg-gray-200"
-                                            }`}
+                                        className={`w-10 rounded-full transition-all duration-500 hover:scale-110 cursor-pointer ${
+                                            i === 3
+                                                ? "bg-green-700 hover:bg-green-800"
+                                                : i === 1
+                                                ? "bg-green-400 hover:bg-green-500"
+                                                : "bg-gray-200 hover:bg-gray-300"
+                                        }`}
                                         style={{ height: `${h}%` }}
                                     />
                                 ))}
                             </div>
                         </div>
+
                         {/* Reminders */}
-                        <div className="bg-white rounded-2xl p-6">
+                        <div className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 animate-fade-in-delay group">
                             <h2 className="font-semibold text-gray-700 mb-4">
                                 Reminders
                             </h2>
 
-                            <p className="font-medium text-2xl text-green-900">
+                            <p className="font-medium group-hover:text-green-600 transition-colors duration-300">
                                 Meeting with Arc Company
                             </p>
                             <p className="text-sm text-gray-500 mb-4">
                                 02:00 pm - 04:00 pm
                             </p>
 
-                            <button className="bg-green-700 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group cursor-pointer flex gap-2 items-center text-white px-5 py-3 font-bold rounded-full text-sm">
-                                <IoVideocam size={20} /> Start Meeting
+                            <button className="bg-green-700 flex gap-2 text-white px-5 py-3 font-bold rounded-full text-sm hover:bg-green-800 hover:scale-105 hover:shadow-lg transition-all duration-300 active:scale-95">
+                                <BsCameraVideoFill size={22} /> Start Meeting
                             </button>
                         </div>
                     </div>
-                    <div className='flex gap-6 '>
+
+                    <div className='flex gap-6'>
                         {/* Team Collaboration */}
-                        <div className="bg-white rounded-2xl p-6 flex-1">
+                        <div className="bg-white rounded-2xl p-6 flex-1 hover:shadow-xl transition-all duration-300 animate-slide-up">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="font-semibold text-gray-700">
                                     Team Collaboration
                                 </h2>
-                                <button className="border cursor-pointer px-4 py-2 flex gap-2 items-center text-green-700 font-medium rounded-full text-sm">
-                                    <FaPlus /> Add Member
+                                <button className="border flex items-center  text-green-500  gap-2 px-4 py-2 rounded-full text-sm hover:bg-green-700 hover:text-white hover:border-green-700 transition-all duration-300 hover:scale-105">
+                                    <FaPlus  />
+ Add Member
                                 </button>
                             </div>
 
@@ -230,10 +289,10 @@ const Dashboard = () => {
                                 ].map((member, i) => (
                                     <div
                                         key={i}
-                                        className="flex justify-between items-center"
+                                        className="flex justify-between items-center hover:bg-gray-50 p-2 rounded-lg transition-all duration-300 hover:translate-x-2 group/item"
                                     >
                                         <div>
-                                            <p className="font-medium text-sm">
+                                            <p className="font-medium text-sm group-hover/item:text-green-600 transition-colors duration-300">
                                                 {member.name}
                                             </p>
                                             <p className="text-xs text-gray-500">
@@ -242,7 +301,7 @@ const Dashboard = () => {
                                         </div>
 
                                         <span
-                                            className={`text-xs px-3 py-1 rounded-full ${member.color}`}
+                                            className={`text-xs px-3 py-1 rounded-full ${member.color} group-hover/item:scale-110 transition-transform duration-300`}
                                         >
                                             {member.status}
                                         </span>
@@ -250,17 +309,18 @@ const Dashboard = () => {
                                 ))}
                             </div>
                         </div>
+
                         {/* Project Progress */}
-                        <div className="bg-white rounded-2xl p-6 text-center">
+                        <div className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-all duration-300 animate-slide-up group">
                             <h2 className="font-semibold text-gray-700 mb-4">
                                 Project Progress
                             </h2>
 
-                            <div className="relative w-40 h-40 mx-auto">
-                                <div className="absolute inset-0 rounded-full border-20 border-gray-200"></div>
-                                <div className="absolute inset-0 rounded-full border-20 border-green-700 border-t-transparent rotate-45"></div>
+                            <div className="relative w-40 h-40 mx-auto group-hover:scale-110 transition-transform duration-500">
+                                <div className="absolute inset-0 rounded-full border-22 border-gray-200"></div>
+                                <div className="absolute inset-0 rounded-full border-22 border-green-700 border-t-transparent rotate-45 group-hover:rotate-[405deg] transition-all duration-1000"></div>
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-2xl font-bold">41%</span>
+                                    <span className="text-2xl font-bold group-hover:text-green-600 transition-colors duration-300">41%</span>
                                 </div>
                             </div>
 
@@ -273,74 +333,62 @@ const Dashboard = () => {
 
                 {/* RIGHT SIDE */}
                 <div className="space-y-6">
-                    <div className="bg-white rounded-2xl p-6 w-80 shadow-sm">
-
-                        {/* Header */}
+                    {/* Projects List */}
+                    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 animate-fade-in-delay-2">
                         <div className="flex justify-between items-center mb-5">
                             <h2 className="font-semibold text-gray-700 text-lg">
-                                Project
+                                Projects
                             </h2>
 
-                            <button className="flex items-center gap-1 border px-3 py-1 rounded-full text-sm hover:bg-gray-100 transition">
+                            <button className="flex items-center gap-1 border px-3 py-1 rounded-full text-sm hover:bg-green-700 hover:text-white hover:border-green-700 transition-all duration-300 hover:scale-105">
                                 <BiPlus size={14} />
                                 New
                             </button>
                         </div>
 
-                        {/* Project List */}
                         <div className="space-y-4">
                             {projects.map((project, index) => (
-                                <div key={index} className="flex items-start gap-3">
-
-                                    {/* Icon Circle */}
+                                <div key={index} className="flex items-start gap-3 hover:bg-gray-50 p-2 rounded-lg transition-all duration-300 hover:translate-x-2 group/project cursor-pointer">
                                     <div
-                                        className={`w-8 h-8 flex items-center justify-center rounded-full ${project.color}`}
+                                        className={`w-8 h-8 flex items-center justify-center rounded-full ${project.color} group-hover/project:scale-125 transition-transform duration-300`}
                                     >
                                         ●
                                     </div>
 
-                                    {/* Text */}
                                     <div>
-                                        <p className="text-sm font-medium text-gray-800">
+                                        <p className="text-sm font-medium text-gray-800 group-hover/project:text-green-600 transition-colors duration-300">
                                             {project.title}
                                         </p>
                                         <p className="text-xs text-gray-400">
                                             {project.date}
                                         </p>
                                     </div>
-
                                 </div>
                             ))}
                         </div>
-
                     </div>
 
-
-
-
                     {/* Time Tracker */}
-                    <div className="bg-green-900 text-white rounded-2xl p-6">
+                    <div className="bg-green-900 text-white rounded-2xl p-6 hover:shadow-2xl hover:scale-105 transition-all duration-500 animate-fade-in-delay-2 group">
                         <h2 className="font-semibold mb-4">Time Tracker</h2>
 
-                        <p className="text-3xl font-bold mb-6">
+                        <p className="text-3xl font-bold mb-6 group-hover:scale-110 transition-transform duration-300">
                             01:24:08
                         </p>
 
                         <div className="flex gap-4">
-                            <button className="bg-white text-green-900 p-3 rounded-full">
-                                {/* <Play size={18} /> */} 
+                            <button className="bg-white text-green-900 p-3 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-300 active:scale-95">
+                                <FaPauseCircle />
                             </button>
 
-                            <button className="bg-red-500 p-3 rounded-full">
-                                {/* <Pause size={18} /> */}<BsFillRecordCircleFill />
-
+                            <button className="bg-red-500 p-3 rounded-full hover:scale-110 hover:shadow-lg hover:bg-red-600 transition-all duration-300 active:scale-95">
+                                <BsFillRecordCircleFill />
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </div >
+        </div>
     );
 };
 

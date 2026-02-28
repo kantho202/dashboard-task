@@ -10,6 +10,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import PrivateRouter from "./PrivateRouter";
 import RootLayout from "../layout/RootLayout";
+import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 
 export const router = createBrowserRouter([
  
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path:'/register',
         element:<Register></Register>
+      },
+      {
+        path:'/forgetPassword',
+        element:<ForgetPassword></ForgetPassword>
       }
     ]
   },

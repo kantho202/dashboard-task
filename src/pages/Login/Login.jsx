@@ -72,9 +72,9 @@ const Login = () => {
             <input type="checkbox" />
             <label>Remember me </label>
           </div>
-          <span className="span">Forgot password?</span>
+          <Link to="/forgetPassword" className="span">Forgot password?</Link>
         </div>
-        <button className="button-submit bg-green-700">Sign In</button>
+        <button className="button-submit ">Sign In</button>
         <p className="p">Don't have an account? <Link to="/register" className="span ">Sign Up</Link>
         </p><p className="p line">Or With</p>
         <div className="">
@@ -160,7 +160,7 @@ const StyledWrapper = styled.div`
 
   .button-submit {
     margin: 20px 0 10px 0;
-    background-color: #151717;
+    background-color: #008000;
     border: none;
     color: white;
     font-size: 15px;
@@ -172,7 +172,7 @@ const StyledWrapper = styled.div`
   }
 
   .button-submit:hover {
-    background-color: #252727;
+    background-color: #008000;
   }
 
   .p {

@@ -85,7 +85,7 @@ const DashboardLayout = () => {
                                     </li>
                                     {/* <li><Link to="/dashboard/vendorProfile" className='mb-3 p-2'>{user?.email}</Link></li> */}
                                     <button onClick={handleLogOut}
-                                        className='btn btn-sm bg-green-700 border-0 text-white btn-outline my-btn '>
+                                        className='btn btn-sm bg-green-700  hover: transition-all duration-500 animate-scale-in group border-0 text-white btn-outline my-btn '>
                                         <LuLogOut/>LogOut</button>
 
                                 </ul>

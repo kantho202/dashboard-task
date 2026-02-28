@@ -108,8 +108,9 @@ const Register = () => {
                             </p>
                         }
                     <button className="button-submit">Sign Up</button>
-                    <p className="p">Don't have an account? <Link to={'/login'} className="span">Sign in</Link>
-                    </p><p className="p line">Or With</p>
+                    <p className="p font-semibold">Don't have an account? <Link to={'/login'} className="span">Sign in</Link>
+                    </p>
+                    {/* <p className="p line">Or With</p> */}
                     <div className="">
                         <SocialLogin></SocialLogin>
 
@@ -194,7 +195,7 @@ const StyledWrapper = styled.div`
 
   .button-submit {
     margin: 20px 0 10px 0;
-    background-color: #151717;
+    background-color: #008000;
     border: none;
     color: white;
     font-size: 15px;
@@ -206,7 +207,7 @@ const StyledWrapper = styled.div`
   }
 
   .button-submit:hover {
-    background-color: #252727;
+    background-color: #008000;
   }
 
   .p {
