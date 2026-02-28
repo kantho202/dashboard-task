@@ -8,15 +8,17 @@ import Analytics from "../components/Analytics/Analytics";
 import AuthLayout from "../layout/AuthLayout";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import PrivateRouter from "./PrivateRouter";
+import RootLayout from "../layout/RootLayout";
 
 export const router = createBrowserRouter([
  
   {
     path: "/",
-    element:<DashboardLayout></DashboardLayout>,
+    element:<PrivateRouter><DashboardLayout></DashboardLayout></PrivateRouter>,
     children:[
        {
-        path:'/',
+        index: true,
         element:<Dashboard></Dashboard>
       },
       {
@@ -35,7 +37,7 @@ export const router = createBrowserRouter([
   },
    {
     path:'/',
-    Component:AuthLayout,
+    element: <AuthLayout />,
     children:[
       {
         path:'/login',

@@ -4,6 +4,7 @@ import { IoAnalyticsSharp } from 'react-icons/io5';
 import { MdDashboard, MdNotificationsNone, MdOutlineEmail, MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { Link, Outlet } from 'react-router';
 import useAuth from '../hooks/useAuth';
+import { LuLogOut } from 'react-icons/lu';
 
 const DashboardLayout = () => {
   const {user,signOutUser}=useAuth()
@@ -52,28 +53,49 @@ const DashboardLayout = () => {
                   <MdOutlineEmail size={23} />
                   <MdNotificationsNone size={23} />
                 </div>
-                {
-                  user ? <>
-                  <button onClick={handleLogOut} className='btn font-bold'>LogOut</button>
-                  </> :
-                  <div>
-                    <Link to="/login" className='btn font-bold'>Login </Link>
-                  <Link to="/register" className='btn font-bold'>Register </Link>
-                    
-                  </div>
-                //   <div className='flex gap-2.5'>
-                //   <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                //     <div className="w-10 rounded-full">
-                //       <img
-                //         alt="Tailwind CSS Navbar component"
-                //         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                //     </div>
-                //   </div>
-                //   <div>
-                //     <h1 className='font-bold text-[12px] lg:text-base '>Hanney Shing</h1>
-                //     <p className='font-medium text-gray-500 text-[10px] lg:text-[13px]'>hanneyshing@gmail.com</p>
-                //   </div>
-                // </div>
+               {
+                    user ?
+                        //  <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>
+                        <div className="flex gap-2 mr-4">
+
+                            <div className="dropdown dropdown-end tooltip tooltip-bottom"
+                                data-tip={user?.displayName || user}>
+                               <div className='flex gap-4'>
+                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img
+                                            alt=""
+                                            src={user?.photoURL} />
+                                    </div>
+                                </div>
+                                    <div>
+                                      <h1 className='font-bold uppercase'>{user.displayName}</h1>
+                                      <h1 className='font-medium'>{user.email}</h1>
+                                    </div>
+                               </div>
+                                <ul
+                                    tabIndex="-1"
+                                    className="menu menu-md dropdown-content 
+                                    bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
+                                    <li className=''>
+                                        {/* <Link className="justify-between mb-3 ">
+                                            <h2>My Profile</h2>
+                                            
+                                        </Link> */}
+                                    </li>
+                                    {/* <li><Link to="/dashboard/vendorProfile" className='mb-3 p-2'>{user?.email}</Link></li> */}
+                                    <button onClick={handleLogOut}
+                                        className='btn btn-sm bg-green-700 border-0 text-white btn-outline my-btn '>
+                                        <LuLogOut/>LogOut</button>
+
+                                </ul>
+                            </div>
+                        </div>
+                        :
+                        <>
+                            <Link to="/login"><button className='btn btn-primary btn-outline hidden lg:flex'>Log in</button></Link>
+                            <Link to="/register"><button className='btn btn-primary hidden lg:flex'>Register</button></Link>
+                        </>
                 }
               </div>
             </div>

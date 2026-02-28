@@ -64,11 +64,8 @@ const Login = () => {
                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
               })}
             className="input" placeholder="Enter your Password" />
-          <button
-            onClick={handleTogglePasswordShow}
-            className="btn btn-xs text-base-content absolute top-6.5 right-4">
-            {showPassword ? <FaEye /> : <FaEyeSlash />}
-          </button>
+         <span className='cursor-pointer' onClick={handleTogglePasswordShow}>{showPassword ? 
+                                     <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
         </div>
         <div className="flex-row">
           <div>

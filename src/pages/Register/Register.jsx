@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
 import { LuCircleUser } from 'react-icons/lu';
 import { MdEmail } from 'react-icons/md';
 import { TbLockPassword } from 'react-icons/tb';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import useAuth from '../../hooks/useAuth';
 import SocialLogin from '../SocialLogin/SocialLogin';
@@ -12,13 +12,24 @@ import SocialLogin from '../SocialLogin/SocialLogin';
 // import SocialLogin from './SocialLogin';
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false)
-     const {registerUser}=useAuth()
+     const {registerUser,updateUserProfile}=useAuth()
+     const navigate =useNavigate()
+     const location=useLocation()
     const { register, handleSubmit, formState: { errors } } = useForm()
     const handleRegister = (data) => {
         console.log('after register', data)
         registerUser(data.email ,data.password)
         .then(result=>{
             console.log(result.user)
+             const userProfile={
+                    displayName:data.name,
+                    photoURL:data.photo
+                }
+                updateUserProfile(userProfile)
+                    .then(() => {
+                        // console.log("Profile Updated!");
+                        navigate(location.state || "/");
+                    })
         })
         .catch(error=>{
             console.log(error.error)
@@ -52,7 +63,7 @@ const Register = () => {
                         <label>Profile Photo </label></div>
                     <div className="inputForm">
                         <LuCircleUser size={20} />
-                        <input type="text" {...register('photoUrl', { required: true })} className="input" placeholder="Enter your photo url" />
+                        <input type="text" {...register('photo', { required: true })} className="input" placeholder="Enter your photo url" />
                     </div>
                     {
                         errors.photoUrl?.type === "required" &&
@@ -79,7 +90,8 @@ const Register = () => {
                                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
                             })}
                             className="input" placeholder="Enter your Password" />
-                        <span className='cursor-pointer' onClick={handleTogglePasswordShow}>{showPassword ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
+                        <span className='cursor-pointer' onClick={handleTogglePasswordShow}>{showPassword ? 
+                            <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
                     </div>
                     {
                         errors.password?.type === "required" &&
