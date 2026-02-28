@@ -74,8 +74,8 @@ const Login = () => {
           </div>
           <span className="span">Forgot password?</span>
         </div>
-        <button className="button-submit">Sign In</button>
-        <p className="p">Don't have an account? <Link to="/register" className="span">Sign Up</Link>
+        <button className="button-submit bg-green-700">Sign In</button>
+        <p className="p">Don't have an account? <Link to="/register" className="span ">Sign Up</Link>
         </p><p className="p line">Or With</p>
         <div className="">
          <SocialLogin></SocialLogin>

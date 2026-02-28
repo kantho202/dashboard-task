@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
+import { BsFillRecordCircleFill } from 'react-icons/bs';
+import { FaPlus } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
-import { MdDashboard, MdNotificationsNone, MdOutlineEmail } from 'react-icons/md';
-// import { data } from 'react-router';
+import { IoVideocam } from 'react-icons/io5';
 
 
 const Dashboard = () => {
@@ -46,17 +47,20 @@ const Dashboard = () => {
     }, [])
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <p className="text-gray-500 text-lg">Loading dashboard...</p>
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+                <div className="flex flex-col items-center gap-4 animate-fade-in">
+                    <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-lg text-gray-600 font-medium animate-pulse">Loading dashboard...</p>
+                </div>
             </div>
         );
     }
     return (
-        <div className=' p-5 bg-[#f7f7f7]'>
+        <div className='p-5 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen'>
             <div className="max-w-7xl mx-auto pb-5">
 
                 {/* Header */}
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-6 animate-slide-down">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">
                             Dashboard
@@ -66,12 +70,12 @@ const Dashboard = () => {
                         </p>
                     </div>
 
-                    <div className="flex gap-3">
-                        <button className="bg-green-700 font-semibold text-white px-5 py-2 rounded-full hover:bg-green-800 transition">
-                            + Add Project
+                    <div className="flex gap-3 animate-fade-in-delay">
+                        <button className="bg-green-700 flex gap-2 items-center cursor-pointer font-semibold text-white px-5 py-2 rounded-full hover:bg-green-800 hover:scale-105 hover:shadow-lg transition-all duration-300 active:scale-95">
+                            <FaPlus /> Add Project
                         </button>
 
-                        <button className="border font-semibold border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-200 transition">
+                        <button className="border font-semibold cursor-pointer border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-200 hover:scale-105 hover:shadow-md transition-all duration-300 active:scale-95">
                             Import Data
                         </button>
                     </div>
@@ -81,57 +85,57 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                     {/* Total Projects */}
-                    <div className="bg-green-700 text-white rounded-2xl p-6">
+                    <div className="bg-green-700 text-white rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.1s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm font-semibold">Total Users</h3>
-                            <div className="bg-white text-green-700 w-7 h-7 flex items-center justify-center rounded-full text-sm">
+                            <div className="bg-white text-green-700 w-7 h-7 flex items-center justify-center rounded-full text-sm group-hover:scale-110 group-hover:rotate-45 transition-all duration-300">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4">{overview.totalUsers}</h2>
+                        <h2 className="text-4xl font-bold mt-4 group-hover:scale-110 transition-transform duration-300">{overview.totalUsers}</h2>
                         <p className="text-xs mt-3 opacity-90">
                             Increased from last month
                         </p>
                     </div>
 
                     {/* Ended Projects */}
-                    <div className="bg-white rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.2s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Active Users</h3>
-                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
+                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600 group-hover:scale-110 group-hover:rotate-45 group-hover:border-green-600 group-hover:text-green-600 transition-all duration-300">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.activeUsers}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.activeUsers}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
                     </div>
 
                     {/* Running Projects */}
-                    <div className="bg-white rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.3s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Revenue</h3>
-                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
+                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600 group-hover:scale-110 group-hover:rotate-45 group-hover:border-green-600 group-hover:text-green-600 transition-all duration-300">
                                 <GoArrowUpRight size={20} />
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.revenue}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.revenue}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             Increased from last month
                         </p>
                     </div>
 
                     {/* Pending Project */}
-                    <div className="bg-white rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group" style={{animationDelay: '0.4s'}}>
                         <div className="flex justify-between items-start">
                             <h3 className="text-sm text-gray-600 font-semibold">Growth</h3>
-                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600">
+                            <div className="border w-7 h-7 flex items-center justify-center rounded-full text-sm text-gray-600 group-hover:scale-110 group-hover:rotate-45 group-hover:border-green-600 group-hover:text-green-600 transition-all duration-300">
                                 <GoArrowUpRight size={20} />
 
                             </div>
                         </div>
-                        <h2 className="text-4xl font-bold mt-4 text-gray-800">{overview.growth}</h2>
+                        <h2 className="text-4xl font-bold mt-4 text-gray-800 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">{overview.growth}</h2>
                         <p className="text-xs mt-3 text-green-600">
                             On Discuss
                         </p>
@@ -173,15 +177,15 @@ const Dashboard = () => {
                                 Reminders
                             </h2>
 
-                            <p className="font-medium">
+                            <p className="font-medium text-2xl text-green-900">
                                 Meeting with Arc Company
                             </p>
                             <p className="text-sm text-gray-500 mb-4">
                                 02:00 pm - 04:00 pm
                             </p>
 
-                            <button className="bg-green-700 text-white px-4 py-2 rounded-full text-sm">
-                                + Start Meeting
+                            <button className="bg-green-700 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-scale-in group cursor-pointer flex gap-2 items-center text-white px-5 py-3 font-bold rounded-full text-sm">
+                                <IoVideocam size={20} /> Start Meeting
                             </button>
                         </div>
                     </div>
@@ -192,8 +196,8 @@ const Dashboard = () => {
                                 <h2 className="font-semibold text-gray-700">
                                     Team Collaboration
                                 </h2>
-                                <button className="border px-4 py-1 rounded-full text-sm">
-                                    + Add Member
+                                <button className="border cursor-pointer px-4 py-2 flex gap-2 items-center text-green-700 font-medium rounded-full text-sm">
+                                    <FaPlus /> Add Member
                                 </button>
                             </div>
 
@@ -253,8 +257,8 @@ const Dashboard = () => {
                             </h2>
 
                             <div className="relative w-40 h-40 mx-auto">
-                                <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
-                                <div className="absolute inset-0 rounded-full border-8 border-green-700 border-t-transparent rotate-45"></div>
+                                <div className="absolute inset-0 rounded-full border-20 border-gray-200"></div>
+                                <div className="absolute inset-0 rounded-full border-20 border-green-700 border-t-transparent rotate-45"></div>
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <span className="text-2xl font-bold">41%</span>
                                 </div>
@@ -324,11 +328,12 @@ const Dashboard = () => {
 
                         <div className="flex gap-4">
                             <button className="bg-white text-green-900 p-3 rounded-full">
-                                {/* <Play size={18} /> */}
+                                {/* <Play size={18} /> */} 
                             </button>
 
                             <button className="bg-red-500 p-3 rounded-full">
-                                {/* <Pause size={18} /> */}
+                                {/* <Pause size={18} /> */}<BsFillRecordCircleFill />
+
                             </button>
                         </div>
                     </div>
